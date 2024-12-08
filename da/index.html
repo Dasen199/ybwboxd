@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云霸王Box</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background: #fff;
+            color: #202124;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 头部区域 */
+        .app-header {
+            padding: 20px;
+            border-bottom: 1px solid #f1f1f1;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .header-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .app-meta {
+            flex: 1;
+        }
+
+        .app-title {
+            font-size: 22px;
+            font-weight: 400;
+            color: #202124;
+            margin-bottom: 4px;
+        }
+
+        .app-developer {
+            font-size: 14px;
+            color: #018786;
+            margin-bottom: 2px;
+        }
+
+        .app-type {
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        /* 数据统计 */
+        .app-stats {
+            display: flex;
+            padding: 12px 20px;
+            gap: 32px;
+            border-bottom: 1px solid #f1f1f1;
+            justify-content: center;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 500;
+            color: #202124;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #5f6368;
+            margin-top: 4px;
+            white-space: nowrap;
+        }
+
+        /* 安装按钮 */
+        .install-section {
+            padding: 16px 20px;
+        }
+
+        .install-btn {
+            display: block;
+            width: 100%;
+            background: #01875f;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0.25px;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .install-btn:hover {
+            background: #017552;
+        }
+
+        /* 操作按钮 */
+        .action-buttons {
+            display: flex;
+            justify-content: flex-start;
+            gap: 32px;
+            padding: 8px 20px;
+            color: #018786;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+        }
+
+        .action-btn i {
+            font-size: 20px;
+        }
+
+        /* 设备兼容性 */
+        .compatibility {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #5f6368;
+            font-size: 12px;
+        }
+
+        /* 截图展示 */
+        .screenshots {
+            padding: 24px 20px;
+            border-top: 8px solid #f1f1f1;
+        }
+        
+        .screenshots h2 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .screenshots h2::before {
+            content: "photo_library";
+            font-family: 'Material Icons';
+            font-size: 24px;
+            color: #5f6368;
+        }
+        
+        .screenshot-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 8px 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .screenshot-grid::-webkit-scrollbar {
+            display: none; /* Chrome, Safari */
+        }
+        
+        .screenshot {
+            flex: 0 0 auto;
+            width: 200px; /* 减小截图尺寸 */
+            height: 356px; /* 保持16:9比例 */
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+            object-fit: cover;
+        }
+        
+        .screenshot:hover {
+            transform: scale(1.05);
+        }
+
+        /* 关于应用 */
+        .about-section {
+            padding: 16px 20px;
+        }
+
+        .about-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .about-title {
+            font-size: 16px;
+            color: #202124;
+        }
+
+        .about-arrow {
+            color: #5f6368;
+        }
+
+        .about-content {
+            padding: 16px 0;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #5f6368;
+        }
+
+        .about-content h3 {
+            margin: 16px 0 8px;
+            font-size: 16px;
+            color: #202124;
+        }
+
+        .about-content ul {
+            padding-left: 20px;
+        }
+
+        .reviews-section {
+            padding: 16px 20px;
+            border-top: 8px solid #f1f1f1;
+            padding-bottom: 100px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rating-score {
+            font-size: 48px;
+            font-weight: 400;
+            color: #202124;
+        }
+
+        .rating-stars {
+            color: #ffd700;
+        }
+
+        .rating-count {
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        .review-item {
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .reviewer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reviewer::before {
+            content: "account_circle";
+            font-family: 'Material Icons';
+            font-size: 24px;
+            color: #5f6368;
+        }
+
+        .review-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .review-date {
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        .review-content {
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .review-reply {
+            margin-top: 12px;
+            padding: 12px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .reply-author {
+            color: #018786;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        @font-face {
+            font-family: 'Material Icons';
+            font-style: normal;
+            font-weight: 400;
+            src: url('./fonts/MaterialIcons-Regular.ttf') format('truetype');
+        }
+
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 图片查看器样式 */
+        .image-viewer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            touch-action: none;
+        }
+
+        .image-viewer.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viewer-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .viewer-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            padding: 20px;
+            z-index: 1001;
+        }
+
+        .prev-button {
+            left: 10px;
+        }
+
+        .next-button {
+            right: 10px;
+        }
+
+        .image-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 14px;
+        }
+
+        /* 浮动下载按钮样式 */
+        .float-download {
+            position: fixed;
+            bottom: -80px; /* 初始位置在屏幕外 */
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .float-download.show {
+            transform: translateY(-80px);
+        }
+
+        .float-download.hide {
+            transform: translateY(0);
+        }
+
+        .float-download-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .float-download-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .float-download-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .float-download-meta {
+            flex: 1;
+        }
+
+        .float-download-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 4px;
+        }
+
+        .float-download-subtitle {
+            font-size: 12px;
+            color: #5f6368;
+        }
+
+        .float-download-btn {
+            background: #01875f;
+            color: white;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-header">
+        <div class="header-icon">
+            <img src="images/app-icon.png" alt="云霸王Box">
+        </div>
+        <div class="app-meta">
+            <h1 class="app-title">云霸王Box</h1>
+            <div class="app-developer">你的宝藏游戏空间！</div>
+            <div class="app-type">版本：v5.1.0</div>
+        </div>
+    </div>
+
+    <div class="app-stats">
+        <div class="stat-item">
+            <div class="stat-value">4.1★</div>
+            <div class="stat-label">2万条评价</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">10万+</div>
+            <div class="stat-label">次下载</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">18+</div>
+            <div class="stat-label">18岁以上</div>
+        </div>
+    </div>
+
+    <div class="install-section">
+        <a href="downloads/yunbawang-box-v5.1.0.apk" download class="install-btn">安装</a>
+    </div>
+
+    <section class="screenshots">
+        <h2>应用截图展示</h2>
+        <div class="screenshot-grid">
+            <img src="images/screenshot1.png" alt="应用截图1" class="screenshot">
+            <img src="images/screenshot2.png" alt="应用截图2" class="screenshot">
+            <img src="images/screenshot3.png" alt="应用截图3" class="screenshot">
+            <img src="images/screenshot4.png" alt="应用截图4" class="screenshot">
+            <img src="images/screenshot5.png" alt="应用截图5" class="screenshot">
+            <img src="images/screenshot6.png" alt="应用截图6" class="screenshot">
+            <img src="images/screenshot7.png" alt="应用截图7" class="screenshot">
+        </div>
+    </section>
+
+    <div class="about-section">
+        <div class="about-header">
+            <div class="about-title">关于此应用</div>
+            <i class="material-icons about-arrow">chevron_right</i>
+        </div>
+        <div class="about-content">
+            <p>云霸王Box是一款强大的复古游戏模拟器，收录了所有FC、SFC、MD、MS、雅达利、NGP、街机游戏，还将4399以及H5游戏一并囊括其中。完全免费，无需广告让您重温经典游戏时光！</p>
+            
+            <h3>主要特性</h3>
+            <ul>
+                <li>支持多平台游戏：FC、SFC、MD等经典平台游戏</li>
+                <li>完全免费：无需广告，无广告干扰</li>
+                <li>即点即玩：在线运行，无需下载</li>
+                <li>操作便捷：支持自定义按键布局和手柄操作</li>
+                <li>存档功能：随时保存游戏进度</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="reviews-section">
+        <div class="section-header">
+            <h2>用户评价</h2>
+            <div class="rating">
+                <div class="rating-score">4.1</div>
+                <div class="rating-stars">★★★★☆</div>
+                <div class="rating-count">2万条评价</div>
+            </div>
+        </div>
+        
+        <div class="review-list">
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="reviewer">烤山芋_</div>
+                    <div class="review-date">2024-03-20</div>
+                    <div class="review-rating">★★★★★</div>
+                </div>
+                <div class="review-content">
+                    游戏是在线玩吗，多不多？
+                </div>
+                <div class="review-reply">
+                    <div class="reply-author">官方回复:</div>
+                    <div class="reply-content">所以游戏在线玩！超多每天更新。</div>
+                </div>
+            </div>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="reviewer">游戏达人</div>
+                    <div class="review-date">2024-03-19</div>
+                    <div class="review-rating">★★★★☆</div>
+                </div>
+                <div class="review-content">
+                    游戏运行流畅，操作反应及时，就是希望能增加更多经典游戏。
+                </div>
+                <div class="review-reply">
+                    <div class="reply-author">官方回复:</div>
+                    <div class="reply-content">感谢支持！我们正在持续增加更多游戏，敬请期待。</div>
+                </div>
+            </div>
+
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="reviewer">怀旧玩家</div>
+                    <div class="review-date">2024-03-18</div>
+                    <div class="review-rating">★★★★★</div>
+                </div>
+                <div class="review-content">
+                    终于找到童年的感觉了，太棒了！存档功能很实用。
+                </div>
+                <div class="review-reply">
+                    <div class="reply-author">官方回复:</div>
+                    <div class="reply-content">谢谢夸奖！我们会继续优化游戏体验。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="image-viewer">
+        <div class="close-button material-icons">close</div>
+        <div class="nav-button prev-button material-icons">chevron_left</div>
+        <div class="nav-button next-button material-icons">chevron_right</div>
+        <div class="viewer-content">
+            <img class="viewer-image" src="" alt="预览图">
+        </div>
+        <div class="image-counter">1 / 7</div>
+    </div>
+
+    <div class="float-download">
+        <div class="float-download-info">
+            <div class="float-download-icon">
+                <img src="images/app-icon.png" alt="云霸王Box">
+            </div>
+            <div class="float-download-meta">
+                <div class="float-download-title">云霸王Box</div>
+                <div class="float-download-subtitle">立即下载，开启游戏之旅</div>
+            </div>
+        </div>
+        <a href="downloads/yunbawang-box-v5.1.0.apk" download class="float-download-btn">下载</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewer = document.querySelector('.image-viewer');
+            const viewerImage = viewer.querySelector('.viewer-image');
+            const closeButton = viewer.querySelector('.close-button');
+            const prevButton = viewer.querySelector('.prev-button');
+            const nextButton = viewer.querySelector('.next-button');
+            const counter = viewer.querySelector('.image-counter');
+            const screenshots = document.querySelectorAll('.screenshot');
+            let currentIndex = 0;
+
+            // 打开图片查看器
+            screenshots.forEach((screenshot, index) => {
+                screenshot.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateViewer();
+                    viewer.classList.add('active');
+                });
+            });
+
+            // 关闭图片查看器
+            closeButton.addEventListener('click', () => {
+                viewer.classList.remove('active');
+            });
+
+            // 上一张图片
+            prevButton.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + screenshots.length) % screenshots.length;
+                updateViewer();
+            });
+
+            // 下一张图片
+            nextButton.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % screenshots.length;
+                updateViewer();
+            });
+
+            // 更新查看器内容
+            function updateViewer() {
+                viewerImage.src = screenshots[currentIndex].src;
+                counter.textContent = `${currentIndex + 1} / ${screenshots.length}`;
+            }
+
+            // 支持触摸滑动
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            viewer.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+            });
+
+            viewer.addEventListener('touchmove', (e) => {
+                touchEndX = e.touches[0].clientX;
+            });
+
+            viewer.addEventListener('touchend', () => {
+                const swipeDistance = touchEndX - touchStartX;
+                if (Math.abs(swipeDistance) > 50) {
+                    if (swipeDistance > 0) {
+                        // 向右滑动，显示上一张
+                        currentIndex = (currentIndex - 1 + screenshots.length) % screenshots.length;
+                    } else {
+                        // 向左滑动��显示下一张
+                        currentIndex = (currentIndex + 1) % screenshots.length;
+                    }
+                    updateViewer();
+                }
+            });
+
+            // 支持键盘操作
+            document.addEventListener('keydown', (e) => {
+                if (!viewer.classList.contains('active')) return;
+                
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        currentIndex = (currentIndex - 1 + screenshots.length) % screenshots.length;
+                        updateViewer();
+                        break;
+                    case 'ArrowRight':
+                        currentIndex = (currentIndex + 1) % screenshots.length;
+                        updateViewer();
+                        break;
+                    case 'Escape':
+                        viewer.classList.remove('active');
+                        break;
+                }
+            });
+
+            // 添加滚动监听
+            let lastScrollTop = 0;
+            const floatDownload = document.querySelector('.float-download');
+            const threshold = 300; // 滚动多少距离后显示
+            
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const isScrollingDown = scrollTop > lastScrollTop;
+                const isNearBottom = (window.innerHeight + scrollTop) >= document.documentElement.scrollHeight - 100;
+                
+                if (isNearBottom) {
+                    // 接近底部时显示
+                    floatDownload.classList.add('show');
+                    floatDownload.classList.remove('hide');
+                } else if (scrollTop > threshold) {
+                    if (isScrollingDown) {
+                        // 向下滚动时隐藏
+                        floatDownload.classList.remove('show');
+                        floatDownload.classList.add('hide');
+                    } else {
+                        // 向上滚动时显示
+                        floatDownload.classList.add('show');
+                        floatDownload.classList.remove('hide');
+                    }
+                } else {
+                    // 在顶部附近时隐藏
+                    floatDownload.classList.remove('show');
+                    floatDownload.classList.add('hide');
+                }
+                
+                lastScrollTop = scrollTop;
+            });
+
+            // 修改点击下载按钮的逻辑
+            document.querySelector('.float-download-btn').addEventListener('click', (e) => {
+                // 触发下载并显示下载进度提示
+                const downloadStartTime = new Date().getTime();
+                
+                // 可以添加下载开始的提示
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 100px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(0, 0, 0, 0.7);
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 20px;
+                    font-size: 14px;
+                    z-index: 1000;
+                `;
+                toast.textContent = '开始下载...';
+                document.body.appendChild(toast);
+                
+                // 3秒后移除提示
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html> 
