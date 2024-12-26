@@ -772,9 +772,15 @@
     </div>
 
     <div class="image-viewer">
-        <div class="close-button material-icons">close</div>
-        <div class="nav-button prev-button material-icons">chevron_left</div>
-        <div class="nav-button next-button material-icons">chevron_right</div>
+        <div class="close-button">
+            <span class="material-icons">close</span>
+        </div>
+        <div class="nav-button prev-button">
+            <span class="material-icons">chevron_left</span>
+        </div>
+        <div class="nav-button next-button">
+            <span class="material-icons">chevron_right</span>
+        </div>
         <div class="viewer-content">
             <img class="viewer-image" src="" alt="预览图">
         </div>
@@ -806,35 +812,32 @@
             let currentIndex = 0;
 
             function updateViewer(direction = null) {
-                const oldImage = viewerImage.cloneNode(true);
-                const newImage = viewerImage;
+                // 预加载下一张图片
+                const nextImg = new Image();
+                nextImg.src = screenshots[currentIndex].src;
                 
-                if (direction) {
-                    oldImage.classList.remove('loaded');
-                    newImage.classList.remove('loaded');
-                    newImage.src = screenshots[currentIndex].src;
-                    
-                    // 等待新图片加载完成
-                    newImage.onload = () => {
+                nextImg.onload = () => {
+                    requestAnimationFrame(() => {
+                        // 先设置新图片
+                        viewerImage.src = nextImg.src;
+                        
+                        // 等待一帧后添加过渡效果
                         requestAnimationFrame(() => {
-                            newImage.classList.add('loaded');
-                            newImage.classList.add(`slide-${direction}`);
+                            viewerImage.classList.add('loaded');
                             
-                            // 移除动画类
-                            setTimeout(() => {
-                                newImage.classList.remove(`slide-${direction}`);
-                            }, 300);
+                            if (direction) {
+                                viewerImage.style.transform = `translateX(${direction === 'left' ? '-30px' : '30px'})`;
+                                
+                                requestAnimationFrame(() => {
+                                    viewerImage.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                                    viewerImage.style.transform = 'translateX(0)';
+                                });
+                            }
                         });
-                    };
-                } else {
-                    newImage.src = screenshots[currentIndex].src;
-                    newImage.onload = () => {
-                        requestAnimationFrame(() => {
-                            newImage.classList.add('loaded');
-                        });
-                    };
-                }
+                    });
+                };
                 
+                // 更新计数器
                 counter.textContent = `${currentIndex + 1} / ${screenshots.length}`;
             }
 
@@ -863,12 +866,16 @@
 
             prevButton.addEventListener('click', (e) => {
                 e.stopPropagation();
+                viewerImage.classList.remove('loaded');
+                viewerImage.style.transition = 'none';
                 currentIndex = (currentIndex - 1 + screenshots.length) % screenshots.length;
                 updateViewer('right');
             });
 
             nextButton.addEventListener('click', (e) => {
                 e.stopPropagation();
+                viewerImage.classList.remove('loaded');
+                viewerImage.style.transition = 'none';
                 currentIndex = (currentIndex + 1) % screenshots.length;
                 updateViewer('left');
             });
