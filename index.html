@@ -21,17 +21,17 @@
 
         /* 头部区域 */
         .app-header {
-            padding: 20px;
-            border-bottom: 1px solid #f1f1f1;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e0e0e0;
             display: flex;
             align-items: flex-start;
             gap: 16px;
         }
 
         .header-icon {
-            width: 72px;
-            height: 72px;
-            border-radius: 20px;
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
             overflow: hidden;
             background: #fff;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -48,8 +48,8 @@
         }
 
         .app-title {
-            font-size: 22px;
-            font-weight: 400;
+            font-size: 20px;
+            font-weight: 500;
             color: #202124;
             margin-bottom: 4px;
         }
@@ -68,9 +68,9 @@
         /* 数据统计 */
         .app-stats {
             display: flex;
-            padding: 12px 20px;
+            padding: 12px 16px;
             gap: 32px;
-            border-bottom: 1px solid #f1f1f1;
+            border-bottom: 1px solid #e0e0e0;
             justify-content: center;
         }
 
@@ -82,7 +82,7 @@
         }
 
         .stat-value {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 500;
             color: #202124;
         }
@@ -90,7 +90,7 @@
         .stat-label {
             font-size: 12px;
             color: #5f6368;
-            margin-top: 4px;
+            margin-top: 2px;
             white-space: nowrap;
         }
 
@@ -102,11 +102,11 @@
         .install-btn {
             display: block;
             width: 100%;
-            background: #01875f;
+            background: #1a73e8;
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 24px;
+            padding: 10px;
+            border-radius: 20px;
             font-size: 16px;
             font-weight: 500;
             text-transform: none;
@@ -118,7 +118,7 @@
         }
 
         .install-btn:hover {
-            background: #017552;
+            background: #1557b0;
         }
 
         /* 操作按钮 */
@@ -154,25 +154,31 @@
 
         /* 截图展示 */
         .screenshots {
-            padding: 24px 20px;
-            border-top: 8px solid #f1f1f1;
+            padding: 16px 20px;
+            border-top: 1px solid #e0e0e0;
+            background: #f8f9fa;
         }
         
         .screenshots h2 {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 500;
             color: #202124;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
         .screenshots h2::before {
-            content: "photo_library";
+            content: "phone_screenshot";
             font-family: 'Material Icons';
-            font-size: 24px;
-            color: #5f6368;
+            font-size: 20px;
+            color: #1a73e8;
+            font-variation-settings:
+                'FILL' 1,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
         }
         
         .screenshot-grid {
@@ -180,27 +186,46 @@
             flex-wrap: nowrap;
             gap: 12px;
             overflow-x: auto;
-            padding: 8px 0;
+            padding: 4px 0 12px;
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
         
         .screenshot-grid::-webkit-scrollbar {
-            display: none; /* Chrome, Safari */
+            height: 4px;
+            display: block;
+        }
+        
+        .screenshot-grid::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .screenshot-grid::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
         }
         
         .screenshot {
             flex: 0 0 auto;
-            width: 200px; /* 减小截图尺寸 */
-            height: 356px; /* 保持16:9比例 */
+            width: 140px;
+            height: 240px;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s ease;
             object-fit: cover;
+            border: 1px solid rgba(0, 0, 0, 0.08);
         }
         
         .screenshot:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 添加滚动提示 */
+        .screenshot-grid::after {
+            content: '';
+            flex: 0 0 20px;
+            height: 1px;
         }
 
         /* 关于应用 */
@@ -430,12 +455,12 @@
         /* 浮动下载按钮样式 */
         .float-download {
             position: fixed;
-            bottom: -80px; /* 初始位置在屏幕外 */
+            bottom: -80px; /* 初始置在屏幕外 */
             left: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.95);
+            background: #ffffff;
             padding: 12px 20px;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease;
             z-index: 999;
             display: flex;
@@ -487,11 +512,11 @@
         }
 
         .float-download-btn {
-            background: #01875f;
+            background: #1a73e8;
             color: white;
             border: none;
-            padding: 8px 24px;
-            border-radius: 20px;
+            padding: 8px 20px;
+            border-radius: 16px;
             font-size: 14px;
             font-weight: 500;
             text-decoration: none;
@@ -549,7 +574,7 @@
             <i class="material-icons about-arrow">chevron_right</i>
         </div>
         <div class="about-content">
-            <p>云霸王Box是一款强大的复古游戏模拟器，收录了所有FC、SFC、MD、MS、雅达利、NGP、街机游戏，还将4399以及H5游戏一并囊括其中。完全免费，无需广告让您重温经典游戏时光！</p>
+            <p>云霸王Box是一款强大的复古游戏模拟器，收录了所有FC、SFC、MD、MS、雅达利、NGP、街机游戏，还将4399以及H5游戏一并囊括其中。完全免费，无需广��让您重温经典游戏时光！</p>
             
             <h3>主要特性</h3>
             <ul>
@@ -747,7 +772,7 @@
                     floatDownload.classList.remove('hide');
                 } else if (scrollTop > threshold) {
                     if (isScrollingDown) {
-                        // 向下滚动时隐藏
+                        // 向下��动时隐藏
                         floatDownload.classList.remove('show');
                         floatDownload.classList.add('hide');
                     } else {
@@ -769,7 +794,7 @@
                 // 触发下载并显示下载进度提示
                 const downloadStartTime = new Date().getTime();
                 
-                // 可以添加下载开始的提示
+                // 以添加下载开始的提示
                 const toast = document.createElement('div');
                 toast.style.cssText = `
                     position: fixed;
