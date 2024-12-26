@@ -707,7 +707,7 @@
                 <li>支持多平台游戏：FC、SFC、MD等经典平台游戏</li>
                 <li>完全免费：无需广告，无广告干扰</li>
                 <li>即点即玩：在线运行，无需下载</li>
-                <li>操作便捷：支持自定义按键布局和手柄操作</li>
+                <li>操作便捷：支持自定义按键布局与手柄操作</li>
                 <li>存档功能：随时保存游戏进度</li>
             </ul>
         </div>
@@ -806,25 +806,36 @@
             let currentIndex = 0;
 
             function updateViewer(direction = null) {
-                viewerImage.classList.remove('loaded');
+                const oldImage = viewerImage.cloneNode(true);
+                const newImage = viewerImage;
                 
                 if (direction) {
-                    viewerImage.classList.add(`slide-${direction}`);
+                    oldImage.classList.remove('loaded');
+                    newImage.classList.remove('loaded');
+                    newImage.src = screenshots[currentIndex].src;
+                    
+                    // 等待新图片加载完成
+                    newImage.onload = () => {
+                        requestAnimationFrame(() => {
+                            newImage.classList.add('loaded');
+                            newImage.classList.add(`slide-${direction}`);
+                            
+                            // 移除动画类
+                            setTimeout(() => {
+                                newImage.classList.remove(`slide-${direction}`);
+                            }, 300);
+                        });
+                    };
+                } else {
+                    newImage.src = screenshots[currentIndex].src;
+                    newImage.onload = () => {
+                        requestAnimationFrame(() => {
+                            newImage.classList.add('loaded');
+                        });
+                    };
                 }
                 
-                viewerImage.src = screenshots[currentIndex].src;
                 counter.textContent = `${currentIndex + 1} / ${screenshots.length}`;
-                
-                viewerImage.onload = () => {
-                    requestAnimationFrame(() => {
-                        viewerImage.classList.add('loaded');
-                        if (direction) {
-                            setTimeout(() => {
-                                viewerImage.classList.remove(`slide-${direction}`);
-                            }, 300);
-                        }
-                    });
-                };
             }
 
             screenshots.forEach((screenshot, index) => {
