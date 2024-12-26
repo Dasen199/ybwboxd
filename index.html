@@ -170,7 +170,7 @@
         }
         
         .screenshots h2::before {
-            content: "\e3d4";
+            content: "gallery_thumbnail";
             font-family: 'Material Icons';
             font-size: 20px;
             color: #1a73e8;
@@ -714,37 +714,49 @@
             const screenshots = document.querySelectorAll('.screenshot');
             let currentIndex = 0;
 
-            // 打开图片查看器
+            function updateViewer() {
+                viewerImage.classList.remove('loaded');
+                viewerImage.src = screenshots[currentIndex].src;
+                counter.textContent = `${currentIndex + 1} / ${screenshots.length}`;
+                
+                // 图片加载完成后添加动画
+                viewerImage.onload = () => {
+                    requestAnimationFrame(() => {
+                        viewerImage.classList.add('loaded');
+                    });
+                };
+            }
+
             screenshots.forEach((screenshot, index) => {
                 screenshot.addEventListener('click', () => {
                     currentIndex = index;
+                    viewer.style.display = 'flex';  // 先设置display
+                    requestAnimationFrame(() => {
+                        viewer.classList.add('active');  // 然后添加active类
+                        document.body.style.overflow = 'hidden';
+                    });
                     updateViewer();
-                    viewer.classList.add('active');
                 });
             });
 
-            // 关闭图片查看器
             closeButton.addEventListener('click', () => {
                 viewer.classList.remove('active');
+                viewerImage.classList.remove('loaded');
+                setTimeout(() => {
+                    viewer.style.display = 'none';
+                    document.body.style.overflow = '';
+                }, 300); // 等待过渡动画完成
             });
 
-            // 上一张图片
             prevButton.addEventListener('click', () => {
                 currentIndex = (currentIndex - 1 + screenshots.length) % screenshots.length;
                 updateViewer();
             });
 
-            // 下一张图片
             nextButton.addEventListener('click', () => {
                 currentIndex = (currentIndex + 1) % screenshots.length;
                 updateViewer();
             });
-
-            // 更新查看器内容
-            function updateViewer() {
-                viewerImage.src = screenshots[currentIndex].src;
-                counter.textContent = `${currentIndex + 1} / ${screenshots.length}`;
-            }
 
             // 支持触摸滑动
             let touchStartX = 0;
@@ -752,20 +764,18 @@
 
             viewer.addEventListener('touchstart', (e) => {
                 touchStartX = e.touches[0].clientX;
-            });
+            }, { passive: true });
 
             viewer.addEventListener('touchmove', (e) => {
                 touchEndX = e.touches[0].clientX;
-            });
+            }, { passive: true });
 
             viewer.addEventListener('touchend', () => {
                 const swipeDistance = touchEndX - touchStartX;
                 if (Math.abs(swipeDistance) > 50) {
                     if (swipeDistance > 0) {
-                        // 向右滑动，显示上一张
                         currentIndex = (currentIndex - 1 + screenshots.length) % screenshots.length;
                     } else {
-                        // 向左滑动显示下一张
                         currentIndex = (currentIndex + 1) % screenshots.length;
                     }
                     updateViewer();
@@ -786,10 +796,15 @@
                         updateViewer();
                         break;
                     case 'Escape':
-                        viewer.classList.remove('active');
+                        closeButton.click();
                         break;
                 }
             });
+
+            // 阻止图片查看器内的触摸滑动事件传播
+            viewer.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+            }, { passive: false });
 
             // 添加滚动监听
             let lastScrollTop = 0;
@@ -816,7 +831,7 @@
                         floatDownload.classList.remove('hide');
                     }
                 } else {
-                    // 在顶部附近时隐藏
+                    // 在顶部附近��隐藏
                     floatDownload.classList.remove('show');
                     floatDownload.classList.add('hide');
                 }
